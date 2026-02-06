@@ -2,17 +2,17 @@
 
 import { useState, useEffect } from 'react'
 import { Canvas } from '@react-three/fiber'
-import { Environment, ContactShadows } from '@react-three/drei'
-import { LiquidBlob } from './LiquidBlob'
+import { Particles } from './Particles'
 
 export function Scene() {
   const [mouse, setMouse] = useState({ x: 0, y: 0 })
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      const x = (e.clientX / window.innerWidth) * 2 - 1
-      const y = -(e.clientY / window.innerHeight) * 2 + 1
-      setMouse({ x, y })
+      setMouse({
+        x: (e.clientX / window.innerWidth) * 2 - 1,
+        y: -(e.clientY / window.innerHeight) * 2 + 1,
+      })
     }
 
     window.addEventListener('mousemove', handleMouseMove)
@@ -22,31 +22,21 @@ export function Scene() {
   return (
     <div className="fixed inset-0 -z-10">
       <Canvas
-        camera={{ position: [0, 0, 5], fov: 45 }}
+        camera={{ position: [0, 0, 5], fov: 60 }}
         dpr={[1, 1.5]}
         gl={{ 
-          antialias: false, 
+          antialias: true, 
           powerPreference: 'high-performance',
           alpha: true 
         }}
       >
         <ambientLight intensity={0.5} />
         <directionalLight position={[5, 5, 5]} intensity={1} />
-        <spotLight position={[-5, 5, 5]} intensity={2} color="#4f46e5" />
         
-        <LiquidBlob mousePosition={mouse} />
+        {/* Floating particles */}
+        <Particles />
         
-        {/* Ground shadow */}
-        <ContactShadows 
-          position={[0, -1.2, 0]} 
-          opacity={0.4} 
-          scale={10} 
-          blur={2.5} 
-          far={4} 
-        />
-        
-        {/* Environment for metal reflections */}
-        <Environment preset="city" />
+        {/* Add more 3D elements here */}
       </Canvas>
     </div>
   )

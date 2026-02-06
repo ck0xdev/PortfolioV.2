@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Canvas } from '@react-three/fiber'
+import { Environment, ContactShadows } from '@react-three/drei'
 import { LiquidBlob } from './LiquidBlob'
 
 export function Scene() {
@@ -11,16 +12,11 @@ export function Scene() {
     const handleMouseMove = (e: MouseEvent) => {
       const x = (e.clientX / window.innerWidth) * 2 - 1
       const y = -(e.clientY / window.innerHeight) * 2 + 1
-      
-      console.log('Mouse:', { x: x.toFixed(2), y: y.toFixed(2) })
       setMouse({ x, y })
     }
 
     window.addEventListener('mousemove', handleMouseMove)
-    
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove)
-    }
+    return () => window.removeEventListener('mousemove', handleMouseMove)
   }, [])
 
   return (
@@ -36,7 +32,21 @@ export function Scene() {
       >
         <ambientLight intensity={0.5} />
         <directionalLight position={[5, 5, 5]} intensity={1} />
+        <spotLight position={[-5, 5, 5]} intensity={2} color="#4f46e5" />
+        
         <LiquidBlob mousePosition={mouse} />
+        
+        {/* Ground shadow */}
+        <ContactShadows 
+          position={[0, -1.2, 0]} 
+          opacity={0.4} 
+          scale={10} 
+          blur={2.5} 
+          far={4} 
+        />
+        
+        {/* Environment for metal reflections */}
+        <Environment preset="city" />
       </Canvas>
     </div>
   )

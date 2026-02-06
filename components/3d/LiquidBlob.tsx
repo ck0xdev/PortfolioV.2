@@ -23,7 +23,7 @@ export function LiquidBlob({ mousePosition }: LiquidBlobProps) {
   }, [])
 
   const geometry = useMemo(() => {
-    const geo = new THREE.IcosahedronGeometry(1.5, 64)
+    const geo = new THREE.IcosahedronGeometry(1, 64)  // Changed from 1.5 to 1 (smaller)
     geo.userData.originalPositions = geo.attributes.position.array.slice()
     return geo
   }, [])
@@ -55,7 +55,7 @@ export function LiquidBlob({ mousePosition }: LiquidBlobProps) {
     geometry.attributes.position.needsUpdate = true
     geometry.computeVertexNormals()
     
-    // Mouse following - fixed to use viewport width/height
+    // Mouse following
     const targetX = (mousePosition.x * viewport.width) / 2
     const targetY = (mousePosition.y * viewport.height) / 2
     
